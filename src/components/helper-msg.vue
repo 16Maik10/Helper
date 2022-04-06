@@ -1,7 +1,7 @@
 <template>
     <div class="msg">
         <label class="msg__label block-title" for="message">
-            Ваш филиал
+            Описание проблемы
             <span class="required-sign">*</span>
         </label>
         <textarea 
@@ -9,13 +9,20 @@
         name="message" 
         id="message"  
         placeholder="Введите текст"
+        @input="setMessage($event.target.value)"
         ></textarea>
     </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
     name: 'helper-msg',
+    methods: {
+        ...mapMutations([
+            'setMessage'
+        ])
+    },
 }
 </script>
 

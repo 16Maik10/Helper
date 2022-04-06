@@ -1,20 +1,16 @@
 <template>
   <div class="main-wrapper">
-    <h1 class="title">Форма подачи заявки в отдел сервиса и качества</h1>
-    <helper-form>
-    </helper-form>
+    <router-view></router-view>
+    <!-- <helper-form>
+    </helper-form> -->
   </div>
 </template>
 
 <script>
 
-import helperForm from './components/helper-form.vue'
 export default {
 
   name: 'App',
-  components: {
-    helperForm,
-  }
 }
 </script>
 

@@ -5,76 +5,90 @@
             <span class="required-sign">*</span>
         </label>
         <input
-            @click="stateOfInput = ''"
+            @click="checkBtn($event.target)"
             class="theme__radio"
             type="radio"
             name="complaint"
             id="complaint"
             value="complaint"
-            v-model="checkedBtn"
         />
         <label for="complaint">Недоволен качеством услуг</label>
         <input
-            @click="stateOfInput = ''"
+            @click="checkBtn($event.target)"
             class="theme__radio"
             type="radio"
             name="complaint"
             id="contract"
             value="contract"
-            v-model="checkedBtn"
         />
         <label for="contract">Расторжение договора</label>
-        <input 
-        @click="stateOfInput = ''" 
-        class="theme__radio" 
-        type="radio" 
-        name="complaint" 
-        id="letter"
-        value="letter"
-        v-model="checkedBtn" 
+        <input
+            @click="checkBtn($event.target)"
+            class="theme__radio"
+            type="radio"
+            name="complaint"
+            id="letter"
+            value="letter"
         />
         <label for="letter">Не приходит письмо активации на почту</label>
-        <input 
-        @click="stateOfInput = ''" 
-        class="theme__radio" 
-        type="radio" 
-        name="complaint" 
-        id="account"
-        value="account"
-        v-model="checkedBtn"
-         />
+        <input
+            @click="checkBtn($event.target)"
+            class="theme__radio"
+            type="radio"
+            name="complaint"
+            id="account"
+            value="account"
+        />
         <label for="account">Не работает личный кабинет</label>
         <input
-            @input="clearRadio"
+            @input="clearRadio($event.target)"
             class="theme__input"
             type="text"
             name="complaint"
-            id="other_theme"
+            id="user_theme"
             placeholder="Другое"
-            v-model="stateOfInput"
         />
     </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 export default {
     name: 'helper-theme',
     data() {
         return {
-            stateOfInput: '',
-            checkedBtn: ''
+            textInput: ''
         }
     },
     methods: {
-        clearRadio() {
-            const checkedRadioEl = document.getElementById(this.checkedBtn);
-            if(checkedRadioEl){
+        ...mapMutations([
+            'setCheckedTheme',
+            'setUserTheme'
+        ]),
+        checkBtn(el) {
+            this.setUserTheme('');
+            this.setCheckedTheme(el.value);
+            this.textInput.value = '';
+        },
+        clearRadio(el) {
+            const checkedRadioEl = document.getElementById(this.CheckedTheme);
+            if (checkedRadioEl) {
                 checkedRadioEl.checked = false;
-                this.checkedBtn = ''
+                this.setCheckedTheme('');
             }
-            }
+            this.setUserTheme(el.value);
         }
+    },
+    computed: {
+        ...mapGetters([
+            'CheckedTheme',
+            'UserTheme'
+        ])
+    },
+    mounted() {
+        this.textInput = document.getElementById('user_theme');
     }
+}
 </script>
 
 <style lang="scss">
@@ -125,7 +139,7 @@ export default {
         width: 218px;
         margin: 10px 0;
         outline: none;
-        border: 1px solid rgba(0,0,0,0.2);
+        border: 1px solid rgba(0, 0, 0, 0.2);
     }
 }
 </style>

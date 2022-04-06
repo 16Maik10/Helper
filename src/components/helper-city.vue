@@ -4,13 +4,19 @@
             Ваш филиал
             <span class="required-sign">*</span>
         </label>
-        <select :disabled="disabled" class="city__vars" name="city" id="city">
+        <select
+            :disabled="Status"
+            class="city__vars"
+            name="city"
+            id="city"
+            @change="setCity($event.target)"
+        >
             <option selected disabled value>Выберите город</option>
-            <option v-for="city in Cities" :key="city.id" value="city.title">{{ city.title }}</option>
+            <option v-for="city in Cities" :key="city.id" :value="city.title">{{ city.title }}</option>
         </select>
         <div class="status">
             <input
-                v-model="disabled"
+                @click="this.setStatus($event.target.checked)"
                 class="status__state"
                 type="checkbox"
                 name="online"
@@ -22,29 +28,31 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'helper-city',
-    data() {
-        return {
-            disabled: false,
-        }
-    },
     computed: {
         ...mapGetters([
-            'Cities'
+            'Cities',
+            'Status'
         ])
     },
     methods: {
         ...mapActions([
             'getCitiesFromApi'
-        ])
+        ]),
+        ...mapMutations([
+            'setCheckedCity',
+            'setStatus'
+        ]),
+        setCity(el) {
+            this.setCheckedCity(el.children[el.selectedIndex].value)
+        },
     },
     created() {
         this.getCitiesFromApi();
-    }
-
+    },
 }
 </script>
 
@@ -71,6 +79,10 @@ export default {
         background-repeat: no-repeat;
         background-size: 15px;
         background-position: 220px;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
     }
 }
 
@@ -113,5 +125,4 @@ export default {
         font-size: 20px;
     }
 }
-
 </style>
